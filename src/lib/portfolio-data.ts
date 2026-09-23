@@ -1,62 +1,116 @@
-export type VideoProvider = "youtube" | "vimeo" | "direct" | null;
+export type VideoPlatform = "youtube" | "vimeo" | "direct" | null;
+export type ProjectCategory = "Real Estate" | "Marketing" | "YouTube";
+export type AspectRatio = "16:9" | "9:16" | "4:3" | "1:1" | "2.39:1";
 
 export type Project = {
   id: string;
   title: string;
-  category: "Real Estate" | "Weddings" | "Marketing" | "Social Content";
+  category: ProjectCategory;
   thumbnail: string;
   videoUrl: string;
-  videoProvider: VideoProvider;
-  description: string;
-  client?: string;
-  services: string[];
-  tone: "lime" | "light" | "deep" | "outline";
+  platform: VideoPlatform;
+  aspectRatio: AspectRatio;
+  description?: string;
+  featured?: boolean;
 };
 
-// Replace each empty thumbnail and videoUrl with the real project assets.
+export const vsl = {
+  title: "CineNest Media — Video Post-Production",
+  thumbnail: "",
+  videoUrl: "",
+  platform: null as VideoPlatform,
+  aspectRatio: "16:9" as AspectRatio,
+};
+
+// Replace the empty thumbnail and videoUrl values with final media. Add another
+// object to this array and the filters and responsive layout update automatically.
 export const projects: Project[] = [
   {
-    id: "project-01",
-    title: "Project 01",
+    id: "real-estate-feature",
+    title: "Property Film — Featured Placeholder",
     category: "Real Estate",
     thumbnail: "",
     videoUrl: "",
-    videoProvider: null,
-    description: "Project details will be added here.",
-    services: ["Editing", "Color grading"],
-    tone: "light",
+    platform: null,
+    aspectRatio: "16:9",
+    description: "Final project details will appear here.",
+    featured: true,
   },
   {
-    id: "project-02",
-    title: "Project 02",
-    category: "Weddings",
+    id: "real-estate-portrait",
+    title: "Property Reel — Portrait Placeholder",
+    category: "Real Estate",
     thumbnail: "",
     videoUrl: "",
-    videoProvider: null,
-    description: "Project details will be added here.",
-    services: ["Editing", "Sound design"],
-    tone: "lime",
+    platform: null,
+    aspectRatio: "9:16",
+    description: "Final project details will appear here.",
   },
   {
-    id: "project-03",
-    title: "Project 03",
+    id: "real-estate-cinematic",
+    title: "Property Film — Cinematic Placeholder",
+    category: "Real Estate",
+    thumbnail: "",
+    videoUrl: "",
+    platform: null,
+    aspectRatio: "2.39:1",
+  },
+  {
+    id: "real-estate-standard",
+    title: "Property Tour — Placeholder",
+    category: "Real Estate",
+    thumbnail: "",
+    videoUrl: "",
+    platform: null,
+    aspectRatio: "16:9",
+  },
+  {
+    id: "marketing-feature",
+    title: "Brand Film — Featured Placeholder",
     category: "Marketing",
     thumbnail: "",
     videoUrl: "",
-    videoProvider: null,
-    description: "Project details will be added here.",
-    services: ["Editing", "Motion & VFX"],
-    tone: "deep",
+    platform: null,
+    aspectRatio: "16:9",
+    description: "Final project details will appear here.",
+    featured: true,
   },
   {
-    id: "project-04",
-    title: "Project 04",
-    category: "Social Content",
+    id: "marketing-portrait",
+    title: "Campaign Reel — Portrait Placeholder",
+    category: "Marketing",
     thumbnail: "",
     videoUrl: "",
-    videoProvider: null,
-    description: "Project details will be added here.",
-    services: ["Short-form edit", "Color grading"],
-    tone: "outline",
+    platform: null,
+    aspectRatio: "9:16",
+  },
+  {
+    id: "marketing-square",
+    title: "Social Campaign — Placeholder",
+    category: "Marketing",
+    thumbnail: "",
+    videoUrl: "",
+    platform: null,
+    aspectRatio: "1:1",
+  },
+  {
+    id: "youtube-documentary",
+    title: "Documentary Edit — Placeholder",
+    category: "YouTube",
+    thumbnail: "",
+    videoUrl: "",
+    platform: null,
+    aspectRatio: "16:9",
+    description: "Final project details will appear here.",
+    featured: true,
+  },
+  {
+    id: "youtube-editorial",
+    title: "Editorial Edit — Placeholder",
+    category: "YouTube",
+    thumbnail: "",
+    videoUrl: "",
+    platform: null,
+    aspectRatio: "16:9",
   },
 ];
