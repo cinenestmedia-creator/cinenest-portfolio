@@ -17,7 +17,7 @@ export default defineConfig({
   },
 
   vite: {
-  base: "/cinenest-portfolio/",
+  base: "/",
 
   plugins: [
     nitro({
