@@ -1,18 +1,27 @@
 export type VideoPlatform = "youtube" | "vimeo" | "direct" | null;
-export type ProjectCategory = "Real Estate" | "Marketing" | "YouTube";
+export type ProjectCategory = "real-estate" | "marketing" | "youtube";
 export type AspectRatio = "16:9" | "9:16" | "4:3" | "1:1" | "2.39:1";
 
 export type Project = {
-  id: string;
+  id: number;
   title: string;
   category: ProjectCategory;
   thumbnail: string;
   videoUrl: string;
   platform: VideoPlatform;
   aspectRatio: AspectRatio;
-  description?: string;
-  featured?: boolean;
+  description: string;
 };
+
+export const categoryLabels: Record<ProjectCategory, string> = {
+  "real-estate": "Real Estate",
+  marketing: "Marketing",
+  youtube: "YouTube",
+};
+
+// Place the original logo file path/URL here (e.g. an imported asset).
+export const brandLogo = "";
+export const brandUrl = "https://cinenestmedia.com";
 
 export const vsl = {
   title: "CineNest Media — Video Post-Production",
@@ -22,95 +31,32 @@ export const vsl = {
   aspectRatio: "16:9" as AspectRatio,
 };
 
-// Replace the empty thumbnail and videoUrl values with final media. Add another
-// object to this array and the filters and responsive layout update automatically.
+const make = (
+  id: number,
+  category: ProjectCategory,
+  n: number,
+  aspectRatio: AspectRatio,
+): Project => ({
+  id,
+  title: `${categoryLabels[category]} ${String(n).padStart(2, "0")}`,
+  category,
+  thumbnail: "",
+  videoUrl: "",
+  platform: null,
+  aspectRatio,
+  description: "",
+});
+
+// Replace thumbnail, videoUrl and platform ("youtube" | "vimeo") on any item.
 export const projects: Project[] = [
-  {
-    id: "real-estate-feature",
-    title: "Property Film — Featured Placeholder",
-    category: "Real Estate",
-    thumbnail: "",
-    videoUrl: "",
-    platform: null,
-    aspectRatio: "16:9",
-    description: "Final project details will appear here.",
-    featured: true,
-  },
-  {
-    id: "real-estate-portrait",
-    title: "Property Reel — Portrait Placeholder",
-    category: "Real Estate",
-    thumbnail: "",
-    videoUrl: "",
-    platform: null,
-    aspectRatio: "9:16",
-    description: "Final project details will appear here.",
-  },
-  {
-    id: "real-estate-cinematic",
-    title: "Property Film — Cinematic Placeholder",
-    category: "Real Estate",
-    thumbnail: "",
-    videoUrl: "",
-    platform: null,
-    aspectRatio: "2.39:1",
-  },
-  {
-    id: "real-estate-standard",
-    title: "Property Tour — Placeholder",
-    category: "Real Estate",
-    thumbnail: "",
-    videoUrl: "",
-    platform: null,
-    aspectRatio: "16:9",
-  },
-  {
-    id: "marketing-feature",
-    title: "Brand Film — Featured Placeholder",
-    category: "Marketing",
-    thumbnail: "",
-    videoUrl: "",
-    platform: null,
-    aspectRatio: "16:9",
-    description: "Final project details will appear here.",
-    featured: true,
-  },
-  {
-    id: "marketing-portrait",
-    title: "Campaign Reel — Portrait Placeholder",
-    category: "Marketing",
-    thumbnail: "",
-    videoUrl: "",
-    platform: null,
-    aspectRatio: "9:16",
-  },
-  {
-    id: "marketing-square",
-    title: "Social Campaign — Placeholder",
-    category: "Marketing",
-    thumbnail: "",
-    videoUrl: "",
-    platform: null,
-    aspectRatio: "1:1",
-  },
-  {
-    id: "youtube-documentary",
-    title: "Documentary Edit — Placeholder",
-    category: "YouTube",
-    thumbnail: "",
-    videoUrl: "",
-    platform: null,
-    aspectRatio: "16:9",
-    description: "Final project details will appear here.",
-    featured: true,
-  },
-  {
-    id: "youtube-editorial",
-    title: "Editorial Edit — Placeholder",
-    category: "YouTube",
-    thumbnail: "",
-    videoUrl: "",
-    platform: null,
-    aspectRatio: "16:9",
-  },
+  make(1, "real-estate", 1, "16:9"),
+  make(2, "real-estate", 2, "9:16"),
+  make(3, "real-estate", 3, "9:16"),
+  make(4, "real-estate", 4, "9:16"),
+  make(5, "real-estate", 5, "16:9"),
+  make(6, "real-estate", 6, "9:16"),
+  make(7, "real-estate", 7, "9:16"),
+  make(8, "real-estate", 8, "9:16"),
+  ...Array.from({ length: 9 }, (_, i) => make(9 + i, "marketing", i + 1, "16:9")),
+  ...Array.from({ length: 3 }, (_, i) => make(18 + i, "youtube", i + 1, "16:9")),
 ];
