@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ArrowRight, Menu, Play, X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { ArrowRight, ChevronDown, Menu, Play, X } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -10,6 +10,9 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import {
+  brandLogo,
+  brandUrl,
+  categoryLabels,
   projects,
   vsl,
   type AspectRatio,
@@ -40,25 +43,36 @@ export const Route = createFileRoute("/")({
   component: CineNestPortfolio,
 });
 
-const navItems = ["Work", "Services", "About", "Contact"] as const;
-const categories = ["All", "Real Estate", "Marketing", "YouTube"] as const;
-const projectCategories: ProjectCategory[] = ["Real Estate", "Marketing", "YouTube"];
+type Filter = "all" | ProjectCategory;
+const projectCategories: ProjectCategory[] = ["real-estate", "marketing", "youtube"];
+const filterOptions: { value: Filter; label: string }[] = [
+  { value: "all", label: "All Work" },
+  ...projectCategories.map((c) => ({ value: c as Filter, label: categoryLabels[c] })),
+];
 
 function LogoSlot({ compact = false }: { compact?: boolean }) {
   return (
     <a
-      href="#top"
-      aria-label="CineNest Media home"
+      href={brandUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="CineNest Media — visit cinenestmedia.com"
       className={`block h-9 ${compact ? "w-24" : "w-32 sm:w-40"}`}
     >
-      <span className="sr-only">CineNest Media logo</span>
+      {brandLogo ? (
+        <img src={brandLogo} alt="CineNest Media" className="h-full w-auto object-contain" />
+      ) : (
+        <span className="sr-only">CineNest Media logo</span>
+      )}
     </a>
   );
 }
 
-function Navigation() {
+function Navigation({ filter, onSelect }: { filter: Filter; onSelect: (f: Filter) => void }) {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [menu, setMenu] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -68,13 +82,32 @@ function Navigation() {
   }, []);
 
   useEffect(() => {
-    if (!open) return;
+    if (!open && !menu) return;
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setOpen(false);
+      if (event.key === "Escape") {
+        setOpen(false);
+        setMenu(false);
+      }
+    };
+    const onClick = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) setMenu(false);
     };
     document.addEventListener("keydown", onKeyDown);
-    return () => document.removeEventListener("keydown", onKeyDown);
-  }, [open]);
+    document.addEventListener("mousedown", onClick);
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      document.removeEventListener("mousedown", onClick);
+    };
+  }, [open, menu]);
+
+  const pick = (f: Filter) => {
+    setMenu(false);
+    setOpen(false);
+    onSelect(f);
+  };
+
+  const linkClass =
+    "text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground transition-colors hover:text-primary";
 
   return (
     <header
@@ -91,16 +124,43 @@ function Navigation() {
         <div className="min-w-0">
           <LogoSlot />
         </div>
-        <div className="hidden items-center gap-8 md:flex">
-          {navItems.map((item) => (
-            <a
-              key={item}
-              href={item === "Services" || item === "About" ? "#contact" : `#${item.toLowerCase()}`}
-              className="text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground transition-colors hover:text-primary"
+        <div className="hidden items-center gap-9 md:flex">
+          <div ref={menuRef} className="relative">
+            <button
+              type="button"
+              aria-haspopup="true"
+              aria-expanded={menu}
+              onClick={() => setMenu((v) => !v)}
+              className={`${linkClass} inline-flex items-center gap-1.5 ${menu ? "text-primary" : ""}`}
             >
-              {item}
-            </a>
-          ))}
+              Portfolio
+              <ChevronDown className={`h-3 w-3 transition-transform ${menu ? "rotate-180" : ""}`} />
+            </button>
+            {menu && (
+              <div className="absolute right-0 top-full mt-5 w-52 border border-border bg-background py-2 animate-in fade-in-0 slide-in-from-top-1">
+                {filterOptions.map((o) => (
+                  <button
+                    key={o.value}
+                    type="button"
+                    onClick={() => pick(o.value)}
+                    className={`group grid w-full grid-cols-[minmax(0,1fr)_auto] items-center px-4 py-2.5 text-left text-[10px] font-semibold uppercase tracking-[0.14em] transition-colors hover:text-primary ${
+                      filter === o.value ? "text-primary" : "text-foreground/80"
+                    }`}
+                  >
+                    <span>{o.label}</span>
+                    <span
+                      className={`h-px w-4 bg-primary transition-opacity ${
+                        filter === o.value ? "opacity-100" : "opacity-0 group-hover:opacity-60"
+                      }`}
+                    />
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+          <a href="#contact" className={linkClass}>
+            Contact
+          </a>
         </div>
         <Button
           variant="ghost"
@@ -115,17 +175,30 @@ function Navigation() {
       </nav>
       {open && (
         <div className="border-t border-border bg-background px-5 py-3 md:hidden">
-          {navItems.map((item) => (
-            <a
-              key={item}
-              href={item === "Services" || item === "About" ? "#contact" : `#${item.toLowerCase()}`}
-              onClick={() => setOpen(false)}
-              className="grid min-h-11 grid-cols-[minmax(0,1fr)_auto] items-center border-b border-border text-xs font-semibold uppercase"
+          <p className="pb-1 pt-2 text-[9px] font-bold uppercase tracking-[0.16em] text-primary">
+            Portfolio
+          </p>
+          {filterOptions.map((o) => (
+            <button
+              key={o.value}
+              type="button"
+              onClick={() => pick(o.value)}
+              className={`grid min-h-11 w-full grid-cols-[minmax(0,1fr)_auto] items-center border-b border-border text-left text-xs font-semibold uppercase ${
+                filter === o.value ? "text-primary" : ""
+              }`}
             >
-              <span className="min-w-0 truncate">{item}</span>
+              <span className="min-w-0 truncate">{o.label}</span>
               <ArrowRight className="h-4 w-4 shrink-0 text-primary" />
-            </a>
+            </button>
           ))}
+          <a
+            href="#contact"
+            onClick={() => setOpen(false)}
+            className="grid min-h-11 grid-cols-[minmax(0,1fr)_auto] items-center text-xs font-semibold uppercase"
+          >
+            <span>Contact</span>
+            <ArrowRight className="h-4 w-4 shrink-0 text-primary" />
+          </a>
         </div>
       )}
     </header>
