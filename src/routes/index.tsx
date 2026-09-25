@@ -378,17 +378,21 @@ function VslSection() {
   );
 }
 
-function ProjectCard({ project }: { project: Project }) {
+function ProjectCard({
+  project,
+  index,
+  className = "",
+}: {
+  project: Project;
+  index: number;
+  className?: string;
+}) {
   const [open, setOpen] = useState(false);
-  const portrait = project.aspectRatio === "9:16";
-  const gridClass = project.featured
-    ? "md:col-span-12"
-    : portrait
-      ? "md:col-span-4"
-      : "md:col-span-8";
+  const label = categoryLabels[project.category];
+  const number = String(index + 1).padStart(2, "0");
 
   return (
-    <article className={`${gridClass} group min-w-0`}>
+    <article className={`group min-w-0 ${className}`}>
       <Button
         variant="ghost"
         onClick={() => setOpen(true)}
@@ -404,35 +408,38 @@ function ProjectCard({ project }: { project: Project }) {
               alt=""
               loading="lazy"
               decoding="async"
-              className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-[1.015]"
+              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
             />
           ) : (
-            <span className="cinematic-grid grid h-full place-items-center">
-              <span className="px-5 text-center">
-                <span className="font-display text-3xl font-semibold uppercase text-foreground/15 sm:text-5xl">
-                  {project.aspectRatio}
+            <span className="cinematic-grid absolute inset-0 block bg-card transition-transform duration-500 group-hover:scale-[1.02]">
+              <span className="absolute left-4 top-3 font-display text-5xl font-semibold leading-none text-foreground/15 sm:text-6xl">
+                {number}
+              </span>
+              <span className="absolute bottom-4 left-4 flex items-center gap-2">
+                <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+                <span className="text-[9px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
+                  Video placeholder
                 </span>
-                <span className="mt-2 block text-[9px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-                  Thumbnail placeholder
-                </span>
+              </span>
+              <span className="absolute bottom-4 right-4 border border-border px-1.5 py-0.5 text-[9px] font-bold tracking-[0.1em] text-primary">
+                {project.aspectRatio}
               </span>
             </span>
           )}
-          <span className="absolute inset-0 bg-background/0 transition-colors group-hover:bg-background/15" />
-          <span className="absolute right-4 top-4 grid h-10 w-10 translate-y-1 place-items-center rounded-full bg-primary text-primary-foreground opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100">
-            <Play className="h-4 w-4 fill-current" />
+          <span className="absolute inset-0 grid place-items-center">
+            <span className="grid h-12 w-12 scale-90 place-items-center rounded-full bg-primary text-primary-foreground opacity-0 transition-all duration-300 group-hover:scale-100 group-hover:opacity-100 group-focus-visible:scale-100 group-focus-visible:opacity-100">
+              <Play className="h-4 w-4 fill-current" />
+            </span>
           </span>
         </span>
       </Button>
-      <div className="border-b border-border py-4">
-        <p className="text-[9px] font-bold uppercase tracking-[0.14em] text-primary">
-          {project.category}
-        </p>
-        <h3 className="mt-1.5 font-display text-xl font-medium uppercase leading-tight transition-transform duration-300 group-hover:translate-x-1 sm:text-2xl">
+      <div className="py-3">
+        <p className="text-[9px] font-bold uppercase tracking-[0.14em] text-primary">{label}</p>
+        <h3 className="mt-1 font-display text-lg font-medium uppercase leading-tight transition-transform duration-300 group-hover:translate-x-1">
           {project.title}
         </h3>
         {project.description && (
-          <p className="mt-2 max-w-xl text-xs leading-6 text-muted-foreground">
+          <p className="mt-1.5 max-w-xl text-xs leading-6 text-muted-foreground">
             {project.description}
           </p>
         )}
@@ -441,7 +448,7 @@ function ProjectCard({ project }: { project: Project }) {
         open={open}
         onOpenChange={setOpen}
         title={project.title}
-        description={project.description ?? `${project.category} video project`}
+        description={project.description || `${label} video project`}
         videoUrl={project.videoUrl}
         platform={project.platform}
         aspectRatio={project.aspectRatio}
@@ -450,9 +457,39 @@ function ProjectCard({ project }: { project: Project }) {
   );
 }
 
-function WorkSection() {
-  const [category, setCategory] = useState<(typeof categories)[number]>("All");
-  const visibleCategories = category === "All" ? projectCategories : [category];
+function CategoryGrid({ category, items }: { category: ProjectCategory; items: Project[] }) {
+  if (category === "real-estate") {
+    // Landscape clips span the full row; portrait clips sit three across.
+    return (
+      <div className="mx-auto mt-6 grid max-w-[1100px] grid-cols-1 gap-x-5 gap-y-8 sm:mt-8 sm:grid-cols-3">
+        {items.map((p, i) => (
+          <ProjectCard
+            key={p.id}
+            project={p}
+            index={i}
+            className={
+              p.aspectRatio === "9:16" ? "mx-auto w-full max-w-sm sm:max-w-none" : "sm:col-span-3"
+            }
+          />
+        ))}
+      </div>
+    );
+  }
+  return (
+    <div
+      className={`mt-6 grid grid-cols-1 gap-x-5 gap-y-8 sm:mt-8 sm:grid-cols-2 lg:grid-cols-3 ${
+        category === "youtube" ? "lg:gap-x-7" : ""
+      }`}
+    >
+      {items.map((p, i) => (
+        <ProjectCard key={p.id} project={p} index={i} />
+      ))}
+    </div>
+  );
+}
+
+function WorkSection({ filter, onFilter }: { filter: Filter; onFilter: (f: Filter) => void }) {
+  const visibleCategories = filter === "all" ? projectCategories : [filter];
 
   return (
     <section id="work" className="scroll-mt-20 px-5 pb-24 pt-12 sm:px-8 sm:pb-32 lg:px-12">
@@ -472,43 +509,42 @@ function WorkSection() {
         </div>
 
         <div aria-label="Filter projects" className="mt-8 flex gap-2 overflow-x-auto pb-2 sm:mt-10">
-          {categories.map((item) => (
+          {filterOptions.map((o) => (
             <Button
-              key={item}
-              variant={category === item ? "cinematic" : "cinematicOutline"}
+              key={o.value}
+              variant={filter === o.value ? "cinematic" : "cinematicOutline"}
               size="sm"
-              onClick={() => setCategory(item)}
-              aria-pressed={category === item}
+              onClick={() => onFilter(o.value)}
+              aria-pressed={filter === o.value}
               className="shrink-0 uppercase"
             >
-              {item}
+              {o.label}
             </Button>
           ))}
         </div>
 
-        <div className="mt-12 space-y-20 sm:mt-16 sm:space-y-28">
-          {visibleCategories.map((sectionCategory) => {
-            const categoryProjects = projects.filter(
-              (project) => project.category === sectionCategory,
-            );
+        <div className="mt-12 space-y-20 sm:mt-16 sm:space-y-24">
+          {visibleCategories.map((cat) => {
+            const items = projects.filter((p) => p.category === cat);
             return (
-              <section key={sectionCategory} aria-labelledby={`category-${sectionCategory}`}>
+              <section
+                key={cat}
+                id={`portfolio-${cat}`}
+                aria-labelledby={`category-${cat}`}
+                className="scroll-mt-24"
+              >
                 <div className="grid grid-cols-[minmax(0,1fr)_auto] items-end gap-4 border-b border-border pb-4">
                   <h2
-                    id={`category-${sectionCategory}`}
+                    id={`category-${cat}`}
                     className="min-w-0 truncate font-display text-3xl font-medium uppercase sm:text-4xl"
                   >
-                    {sectionCategory}
+                    {categoryLabels[cat]}
                   </h2>
                   <span className="shrink-0 text-[10px] text-muted-foreground">
-                    {String(categoryProjects.length).padStart(2, "0")}
+                    {String(items.length).padStart(2, "0")}
                   </span>
                 </div>
-                <div className="mt-6 grid grid-cols-1 items-start gap-x-5 gap-y-10 md:grid-cols-12 sm:mt-8">
-                  {categoryProjects.map((project) => (
-                    <ProjectCard key={project.id} project={project} />
-                  ))}
-                </div>
+                <CategoryGrid category={cat} items={items} />
               </section>
             );
           })}
@@ -570,11 +606,21 @@ function Footer() {
 }
 
 function CineNestPortfolio() {
+  const [filter, setFilter] = useState<Filter>("all");
+
+  const selectFromNav = (f: Filter) => {
+    setFilter(f);
+    requestAnimationFrame(() => {
+      const target = document.getElementById(f === "all" ? "work" : `portfolio-${f}`);
+      target?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  };
+
   return (
     <main id="top" className="overflow-hidden">
-      <Navigation />
+      <Navigation filter={filter} onSelect={selectFromNav} />
       <VslSection />
-      <WorkSection />
+      <WorkSection filter={filter} onFilter={setFilter} />
       <ContactSection />
       <Footer />
     </main>
