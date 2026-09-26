@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { ArrowRight, ChevronDown, Menu, Play, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
-import logoAsset from "@/assets/cinenest-logo.png.asset.json";
+import logoAsset from "@/assets/cinenest-logo-trim.png.asset.json";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import {
@@ -44,7 +44,7 @@ function BrandLogo({ compact = false }: { compact?: boolean }) {
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Visit CineNest Media"
-      className={`block shrink-0 ${compact ? "h-12 w-28" : "h-12 w-32 sm:h-14 sm:w-40"}`}
+      className={`block shrink-0 ${compact ? "h-14 w-32" : "h-16 w-36 sm:h-18 sm:w-44"}`}
     >
       <img src={logoAsset.url} alt="CineNest Media" className="h-full w-full object-contain object-left" />
     </a>
@@ -152,7 +152,7 @@ function VideoModal({ video, open, onOpenChange }: { video: VideoItem; open: boo
   const portrait = video.aspectRatio === "9:16";
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className={`max-h-[94vh] overflow-y-auto border-border bg-popover p-3 sm:p-4 ${portrait ? "max-w-[min(92vw,34rem)]" : "max-w-[min(94vw,1200px)]"}`}>
+      <DialogContent className={`max-h-[94vh] overflow-y-auto border-border bg-popover p-3 sm:p-4 ${portrait ? "max-w-[min(92vw,46vh)]" : "max-w-[min(94vw,145vh,1200px)]"}`}>
         <DialogTitle className="sr-only">{video.category} video {video.order}</DialogTitle>
         <DialogDescription className="sr-only">CineNest Media portfolio video</DialogDescription>
         {video.platform === "direct" ? (
