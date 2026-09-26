@@ -44,7 +44,7 @@ function BrandLogo({ compact = false }: { compact?: boolean }) {
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Visit CineNest Media"
-      className={`block shrink-0 ${compact ? "h-14 w-32" : "h-16 w-36 sm:h-18 sm:w-44"}`}
+      className={`block shrink-0 bg-primary px-2 ${compact ? "h-12 w-28" : "h-14 w-36 sm:h-16 sm:w-44"}`}
     >
       <img src={logoAsset.url} alt="CineNest Media" className="h-full w-full object-contain object-left" />
     </a>
@@ -160,7 +160,7 @@ function VideoModal({ video, open, onOpenChange }: { video: VideoItem; open: boo
   }, [open, onOpenChange]);
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className={`max-h-[94vh] overflow-y-auto border-border bg-popover p-3 sm:p-4 ${portrait ? "max-w-[min(92vw,46vh)]" : "max-w-[min(94vw,145vh,1200px)]"}`}>
+      <DialogContent onOpenAutoFocus={(event) => event.preventDefault()} className={`max-h-[94vh] overflow-y-auto border-border bg-popover p-3 sm:p-4 ${portrait ? "max-w-[min(92vw,46vh)]" : "max-w-[min(94vw,145vh,1200px)]"}`}>
         <DialogTitle className="sr-only">{video.category} video {video.order}</DialogTitle>
         <DialogDescription className="sr-only">CineNest Media portfolio video</DialogDescription>
         {video.platform === "direct" ? (
