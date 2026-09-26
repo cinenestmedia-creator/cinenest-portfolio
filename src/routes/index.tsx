@@ -150,6 +150,14 @@ function getEmbedUrl(url: string, platform: VideoPlatform) {
 function VideoModal({ video, open, onOpenChange }: { video: VideoItem; open: boolean; onOpenChange: (open: boolean) => void }) {
   const embedUrl = getEmbedUrl(video.url, video.platform);
   const portrait = video.aspectRatio === "9:16";
+  useEffect(() => {
+    if (!open) return;
+    const onEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") onOpenChange(false);
+    };
+    window.addEventListener("keydown", onEscape, true);
+    return () => window.removeEventListener("keydown", onEscape, true);
+  }, [open, onOpenChange]);
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className={`max-h-[94vh] overflow-y-auto border-border bg-popover p-3 sm:p-4 ${portrait ? "max-w-[min(92vw,46vh)]" : "max-w-[min(94vw,145vh,1200px)]"}`}>
