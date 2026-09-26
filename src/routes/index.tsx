@@ -180,7 +180,7 @@ function VideoCard({ video, position }: { video: VideoItem; position: number }) 
     <article className="group min-w-0">
       <Button variant="ghost" onClick={() => setOpen(true)} className="h-auto w-full justify-start rounded-none p-0 text-left hover:bg-transparent" aria-label={`Play ${label} video ${position}`}>
         <span className={`${ratioClasses[video.aspectRatio]} relative block w-full overflow-hidden border border-border bg-card transition-colors duration-300 group-hover:border-primary/60`}>
-          <img src={video.thumbnail} alt="" loading="lazy" decoding="async" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]" />
+           <img src={video.thumbnail} alt="" loading="lazy" decoding="async" className="h-full w-full bg-card object-contain transition-transform duration-500 group-hover:scale-[1.02]" />
           <span className="absolute inset-0 bg-background/10 transition-colors group-hover:bg-background/25" />
           <span className="absolute inset-0 grid place-items-center">
             <span className="grid h-12 w-12 place-items-center rounded-full bg-primary text-primary-foreground transition-transform duration-300 group-hover:scale-110">
