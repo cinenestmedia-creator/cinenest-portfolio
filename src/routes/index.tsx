@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { ArrowRight, ChevronDown, Menu, Play, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
-import logoAsset from "@/assets/cinenest-logo.png.asset.json";
+import logoAsset from "@/assets/cinenest-logo-trim.png.asset.json";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import {
@@ -44,7 +44,7 @@ function BrandLogo({ compact = false }: { compact?: boolean }) {
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Visit CineNest Media"
-      className={`block shrink-0 ${compact ? "h-12 w-28" : "h-12 w-32 sm:h-14 sm:w-40"}`}
+      className={`block shrink-0 bg-primary px-2 ${compact ? "h-12 w-28" : "h-14 w-36 sm:h-16 sm:w-44"}`}
     >
       <img src={logoAsset.url} alt="CineNest Media" className="h-full w-full object-contain object-left" />
     </a>
@@ -93,9 +93,9 @@ function Navigation() {
         <div className="min-w-0"><BrandLogo /></div>
         <div className="hidden items-center gap-9 md:flex">
           <div className="relative" onMouseEnter={openDropdown} onMouseLeave={closeDropdown}>
-            <button type="button" aria-haspopup="true" aria-expanded={dropdownOpen} onClick={() => setDropdownOpen((value) => !value)} className={`${navClass} inline-flex items-center gap-1.5`}>
+             <Button variant="ghost" type="button" aria-haspopup="true" aria-expanded={dropdownOpen} onClick={openDropdown} className={`${navClass} inline-flex h-auto items-center gap-1.5 rounded-none px-0 py-0 hover:bg-transparent`}>
               Portfolio <ChevronDown className={`h-3 w-3 transition-transform ${dropdownOpen ? "rotate-180" : ""}`} />
-            </button>
+             </Button>
             {dropdownOpen && (
               <div className="absolute right-0 top-full mt-5 w-56 border border-border bg-background py-2 animate-in fade-in-0 slide-in-from-top-1">
                 {portfolioCategories.map((category) => (
@@ -114,9 +114,9 @@ function Navigation() {
       </nav>
       {mobileOpen && (
         <div className="border-t border-border bg-background px-5 pb-5 md:hidden">
-          <button type="button" aria-expanded={mobilePortfolioOpen} onClick={() => setMobilePortfolioOpen((value) => !value)} className="grid min-h-12 w-full grid-cols-[minmax(0,1fr)_auto] items-center border-b border-border text-left text-xs font-semibold uppercase">
+           <Button variant="ghost" type="button" aria-expanded={mobilePortfolioOpen} onClick={() => setMobilePortfolioOpen((value) => !value)} className="grid min-h-12 h-auto w-full grid-cols-[minmax(0,1fr)_auto] items-center justify-normal rounded-none border-b border-border px-0 text-left text-xs font-semibold uppercase hover:bg-transparent">
             <span>Portfolio</span><ChevronDown className={`h-4 w-4 text-primary transition-transform ${mobilePortfolioOpen ? "rotate-180" : ""}`} />
-          </button>
+           </Button>
           {mobilePortfolioOpen && portfolioCategories.map((category) => (
             <a key={category} href={`#${category}`} onClick={closeMobile} className="grid min-h-11 grid-cols-[auto_minmax(0,1fr)] items-center gap-4 border-b border-border pl-3 text-[10px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
               <span className="text-primary">0{portfolioCategories.indexOf(category) + 1}</span><span>{categoryLabels[category]}</span>
@@ -150,9 +150,17 @@ function getEmbedUrl(url: string, platform: VideoPlatform) {
 function VideoModal({ video, open, onOpenChange }: { video: VideoItem; open: boolean; onOpenChange: (open: boolean) => void }) {
   const embedUrl = getEmbedUrl(video.url, video.platform);
   const portrait = video.aspectRatio === "9:16";
+  useEffect(() => {
+    if (!open) return;
+    const onEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") onOpenChange(false);
+    };
+    window.addEventListener("keydown", onEscape, true);
+    return () => window.removeEventListener("keydown", onEscape, true);
+  }, [open, onOpenChange]);
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className={`max-h-[94vh] overflow-y-auto border-border bg-popover p-3 sm:p-4 ${portrait ? "max-w-[min(92vw,34rem)]" : "max-w-[min(94vw,1200px)]"}`}>
+      <DialogContent onOpenAutoFocus={(event) => event.preventDefault()} className={`max-h-[94vh] overflow-y-auto border-border bg-popover p-3 sm:p-4 ${portrait ? "max-w-[min(92vw,46vh)]" : "max-w-[min(94vw,145vh,1200px)]"}`}>
         <DialogTitle className="sr-only">{video.category} video {video.order}</DialogTitle>
         <DialogDescription className="sr-only">CineNest Media portfolio video</DialogDescription>
         {video.platform === "direct" ? (
@@ -172,7 +180,7 @@ function VideoCard({ video, position }: { video: VideoItem; position: number }) 
     <article className="group min-w-0">
       <Button variant="ghost" onClick={() => setOpen(true)} className="h-auto w-full justify-start rounded-none p-0 text-left hover:bg-transparent" aria-label={`Play ${label} video ${position}`}>
         <span className={`${ratioClasses[video.aspectRatio]} relative block w-full overflow-hidden border border-border bg-card transition-colors duration-300 group-hover:border-primary/60`}>
-          <img src={video.thumbnail} alt="" loading="lazy" decoding="async" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]" />
+           <img src={video.thumbnail} alt="" loading="lazy" decoding="async" className="h-full w-full bg-card object-contain transition-transform duration-500 group-hover:scale-[1.02]" />
           <span className="absolute inset-0 bg-background/10 transition-colors group-hover:bg-background/25" />
           <span className="absolute inset-0 grid place-items-center">
             <span className="grid h-12 w-12 place-items-center rounded-full bg-primary text-primary-foreground transition-transform duration-300 group-hover:scale-110">
