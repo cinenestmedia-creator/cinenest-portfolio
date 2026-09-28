@@ -86,7 +86,6 @@ function Navigation({ onFilter }: { onFilter: (filter: PortfolioFilter) => void 
   const closeDropdown = () => {
     closeTimer.current = setTimeout(() => setDropdownOpen(false), 120);
   };
-  const closeMobile = () => setMobileOpen(false);
   const selectFilter = (filter: PortfolioFilter) => {
     onFilter(filter);
     setDropdownOpen(false);
@@ -106,9 +105,9 @@ function Navigation({ onFilter }: { onFilter: (filter: PortfolioFilter) => void 
             {dropdownOpen && (
               <div className="absolute right-0 top-full mt-5 w-56 border border-border bg-background py-2 animate-in fade-in-0 slide-in-from-top-1">
                 {portfolioCategories.map((category) => (
-                   <button key={category} type="button" onClick={() => selectFilter(category)} className="group grid w-full grid-cols-[minmax(0,1fr)_auto] items-center px-4 py-3 text-left text-[10px] font-semibold uppercase tracking-[0.14em] text-foreground/80 transition-colors hover:text-primary">
+                   <Button key={category} variant="ghost" type="button" onClick={() => selectFilter(category)} className="group grid h-auto w-full grid-cols-[minmax(0,1fr)_auto] items-center justify-normal rounded-none px-4 py-3 text-left text-[10px] font-semibold uppercase tracking-[0.14em] text-foreground/80 transition-colors hover:bg-transparent hover:text-primary">
                     <span>{categoryLabels[category]}</span><ArrowRight className="h-3 w-3 opacity-0 transition-opacity group-hover:opacity-100" />
-                   </button>
+                   </Button>
                 ))}
               </div>
             )}
@@ -125,9 +124,9 @@ function Navigation({ onFilter }: { onFilter: (filter: PortfolioFilter) => void 
             <span>Portfolio</span><ChevronDown className={`h-4 w-4 text-primary transition-transform ${mobilePortfolioOpen ? "rotate-180" : ""}`} />
            </Button>
           {mobilePortfolioOpen && portfolioCategories.map((category) => (
-             <button key={category} type="button" onClick={() => selectFilter(category)} className="grid min-h-11 w-full grid-cols-[auto_minmax(0,1fr)] items-center gap-4 border-b border-border pl-3 text-left text-[10px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
+             <Button key={category} variant="ghost" type="button" onClick={() => selectFilter(category)} className="grid h-auto min-h-11 w-full grid-cols-[auto_minmax(0,1fr)] items-center justify-normal gap-4 rounded-none border-b border-border pl-3 text-left text-[10px] font-semibold uppercase tracking-[0.12em] text-muted-foreground hover:bg-transparent">
               <span className="text-primary">0{portfolioCategories.indexOf(category) + 1}</span><span>{categoryLabels[category]}</span>
-             </button>
+             </Button>
           ))}
           <a href="#contact" onClick={closeMobile} className="grid min-h-12 grid-cols-[minmax(0,1fr)_auto] items-center text-xs font-semibold uppercase"><span>Contact</span><ArrowRight className="h-4 w-4 text-primary" /></a>
         </div>
