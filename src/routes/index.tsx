@@ -128,7 +128,7 @@ function Navigation({ onFilter }: { onFilter: (filter: PortfolioFilter) => void 
               <span className="text-primary">0{portfolioCategories.indexOf(category) + 1}</span><span>{categoryLabels[category]}</span>
              </Button>
           ))}
-          <a href="#contact" onClick={closeMobile} className="grid min-h-12 grid-cols-[minmax(0,1fr)_auto] items-center text-xs font-semibold uppercase"><span>Contact</span><ArrowRight className="h-4 w-4 text-primary" /></a>
+           <a href="#contact" onClick={() => setMobileOpen(false)} className="grid min-h-12 grid-cols-[minmax(0,1fr)_auto] items-center text-xs font-semibold uppercase"><span>Contact</span><ArrowRight className="h-4 w-4 text-primary" /></a>
         </div>
       )}
     </header>
