@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { ArrowRight, ChevronDown, Menu, Play, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
-import logoAsset from "@/assets/cinenest-logo-trim.png.asset.json";
+import logoAsset from "@/assets/cinenest-media-logo.png.asset.json";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import {
@@ -17,6 +17,8 @@ import {
   type VideoItem,
   type VideoPlatform,
 } from "@/lib/portfolio-data";
+
+type PortfolioFilter = "all" | PortfolioCategory;
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -44,14 +46,14 @@ function BrandLogo({ compact = false }: { compact?: boolean }) {
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Visit CineNest Media"
-      className={`block shrink-0 bg-primary px-2 ${compact ? "h-12 w-28" : "h-14 w-36 sm:h-16 sm:w-44"}`}
+      className={`block shrink-0 ${compact ? "h-12 w-28" : "h-14 w-36 sm:h-16 sm:w-44"}`}
     >
       <img src={logoAsset.url} alt="CineNest Media" className="h-full w-full object-contain object-left" />
     </a>
   );
 }
 
-function Navigation() {
+function Navigation({ onFilter }: { onFilter: (filter: PortfolioFilter) => void }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobilePortfolioOpen, setMobilePortfolioOpen] = useState(true);
@@ -85,6 +87,11 @@ function Navigation() {
     closeTimer.current = setTimeout(() => setDropdownOpen(false), 120);
   };
   const closeMobile = () => setMobileOpen(false);
+  const selectFilter = (filter: PortfolioFilter) => {
+    onFilter(filter);
+    setDropdownOpen(false);
+    setMobileOpen(false);
+  };
   const navClass = "text-[10px] font-semibold uppercase tracking-[0.14em] text-foreground/80 transition-colors hover:text-primary focus-visible:text-primary";
 
   return (
@@ -93,15 +100,15 @@ function Navigation() {
         <div className="min-w-0"><BrandLogo /></div>
         <div className="hidden items-center gap-9 md:flex">
           <div className="relative" onMouseEnter={openDropdown} onMouseLeave={closeDropdown}>
-             <Button variant="ghost" type="button" aria-haspopup="true" aria-expanded={dropdownOpen} onClick={openDropdown} className={`${navClass} inline-flex h-auto items-center gap-1.5 rounded-none px-0 py-0 hover:bg-transparent`}>
+             <Button variant="ghost" type="button" aria-haspopup="true" aria-expanded={dropdownOpen} onClick={() => { selectFilter("all"); openDropdown(); }} className={`${navClass} inline-flex h-auto items-center gap-1.5 rounded-none px-0 py-0 hover:bg-transparent`}>
               Portfolio <ChevronDown className={`h-3 w-3 transition-transform ${dropdownOpen ? "rotate-180" : ""}`} />
              </Button>
             {dropdownOpen && (
               <div className="absolute right-0 top-full mt-5 w-56 border border-border bg-background py-2 animate-in fade-in-0 slide-in-from-top-1">
                 {portfolioCategories.map((category) => (
-                  <a key={category} href={`#${category}`} onClick={() => setDropdownOpen(false)} className="group grid grid-cols-[minmax(0,1fr)_auto] items-center px-4 py-3 text-[10px] font-semibold uppercase tracking-[0.14em] text-foreground/80 transition-colors hover:text-primary">
+                   <button key={category} type="button" onClick={() => selectFilter(category)} className="group grid w-full grid-cols-[minmax(0,1fr)_auto] items-center px-4 py-3 text-left text-[10px] font-semibold uppercase tracking-[0.14em] text-foreground/80 transition-colors hover:text-primary">
                     <span>{categoryLabels[category]}</span><ArrowRight className="h-3 w-3 opacity-0 transition-opacity group-hover:opacity-100" />
-                  </a>
+                   </button>
                 ))}
               </div>
             )}
@@ -118,9 +125,9 @@ function Navigation() {
             <span>Portfolio</span><ChevronDown className={`h-4 w-4 text-primary transition-transform ${mobilePortfolioOpen ? "rotate-180" : ""}`} />
            </Button>
           {mobilePortfolioOpen && portfolioCategories.map((category) => (
-            <a key={category} href={`#${category}`} onClick={closeMobile} className="grid min-h-11 grid-cols-[auto_minmax(0,1fr)] items-center gap-4 border-b border-border pl-3 text-[10px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
+             <button key={category} type="button" onClick={() => selectFilter(category)} className="grid min-h-11 w-full grid-cols-[auto_minmax(0,1fr)] items-center gap-4 border-b border-border pl-3 text-left text-[10px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
               <span className="text-primary">0{portfolioCategories.indexOf(category) + 1}</span><span>{categoryLabels[category]}</span>
-            </a>
+             </button>
           ))}
           <a href="#contact" onClick={closeMobile} className="grid min-h-12 grid-cols-[minmax(0,1fr)_auto] items-center text-xs font-semibold uppercase"><span>Contact</span><ArrowRight className="h-4 w-4 text-primary" /></a>
         </div>
@@ -229,19 +236,23 @@ function EditorialGrid({ category, videos }: { category: PortfolioCategory; vide
   );
 }
 
-function CategoryNavigation() {
+function CategoryNavigation({ selected, onSelect }: { selected: PortfolioFilter; onSelect: (filter: PortfolioFilter) => void }) {
+  const filters: PortfolioFilter[] = ["all", ...portfolioCategories];
   return (
-    <nav aria-label="Portfolio categories" className="mt-8 grid grid-cols-2 border border-border sm:grid-cols-4">
-      {portfolioCategories.map((category, index) => (
-        <a key={category} href={`#${category}`} className="group grid min-h-14 grid-cols-[auto_minmax(0,1fr)] items-center gap-3 border-border px-3 text-[9px] font-semibold uppercase tracking-[0.1em] transition-colors hover:bg-muted hover:text-primary [&:nth-child(odd)]:border-r sm:border-r sm:[&:last-child]:border-r-0">
-          <span className="text-primary">0{index + 1}</span><span className="truncate">{categoryLabels[category]}</span>
-        </a>
+    <nav aria-label="Filter portfolio" className="mt-8 overflow-x-auto pb-1">
+      <div className="flex min-w-max border border-border">
+      {filters.map((filter) => (
+        <Button key={filter} type="button" variant="ghost" aria-pressed={selected === filter} onClick={() => onSelect(filter)} className={`h-14 rounded-none border-r border-border px-5 text-[9px] font-semibold uppercase tracking-[0.1em] last:border-r-0 hover:bg-muted hover:text-primary sm:flex-1 ${selected === filter ? "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground" : "text-foreground"}`}>
+          {filter === "all" ? "All" : categoryLabels[filter]}
+        </Button>
       ))}
+      </div>
     </nav>
   );
 }
 
-function PortfolioSection() {
+function PortfolioSection({ selected, onSelect }: { selected: PortfolioFilter; onSelect: (filter: PortfolioFilter) => void }) {
+  const visibleCategories = selected === "all" ? portfolioCategories : [selected];
   return (
     <section id="portfolio" className="px-5 pb-24 pt-28 sm:px-8 sm:pb-32 sm:pt-32 lg:px-12">
       <div className="mx-auto max-w-[1500px]">
@@ -252,9 +263,10 @@ function PortfolioSection() {
             <p className="mt-4 max-w-2xl text-sm leading-7 text-muted-foreground sm:text-base">A selection of edits crafted through storytelling, pacing, color and post-production.</p>
           </div>
         </div>
-        <CategoryNavigation />
-        <div className="mt-16 space-y-24 sm:mt-20 sm:space-y-32">
-          {portfolioCategories.map((category, index) => {
+         <CategoryNavigation selected={selected} onSelect={onSelect} />
+         <div key={selected} className="mt-16 space-y-24 animate-in fade-in-0 duration-300 sm:mt-20 sm:space-y-32">
+           {visibleCategories.map((category) => {
+             const index = portfolioCategories.indexOf(category);
             const videos = portfolioVideos.filter((video) => video.category === category);
             return (
               <section key={category} id={category} aria-labelledby={`${category}-heading`} className="scroll-mt-24 reveal">
@@ -324,5 +336,10 @@ function Footer() {
 }
 
 function CineNestPortfolio() {
-  return <main id="top" className="overflow-hidden"><Navigation /><PortfolioSection /><TestimonialSection /><CTA /><Footer /></main>;
+  const [selectedFilter, setSelectedFilter] = useState<PortfolioFilter>("all");
+  const selectFilter = (filter: PortfolioFilter) => {
+    setSelectedFilter(filter);
+    window.requestAnimationFrame(() => document.getElementById("portfolio")?.scrollIntoView({ behavior: "smooth", block: "start" }));
+  };
+  return <main id="top" className="overflow-hidden"><Navigation onFilter={selectFilter} /><PortfolioSection selected={selectedFilter} onSelect={setSelectedFilter} /><TestimonialSection /><CTA /><Footer /></main>;
 }
