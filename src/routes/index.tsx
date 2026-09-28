@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { ArrowRight, ChevronDown, Menu, Play, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
-import logoAsset from "@/assets/cinenest-media-logo.png.asset.json";
+import logoAsset from "@/assets/cinenest-media-logo-trim.png.asset.json";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import {
