@@ -72,7 +72,7 @@ export const portfolioCategories: PortfolioCategory[] = [
 
 export const videos: VideoItem[] = [
   { id: 1, category: "real-estate", url: "https://youtu.be/Ayo2WasxSTM", platform: "youtube", aspectRatio: "16:9", order: 1, thumbnail: thumb01 },
-  { id: 2, category: "real-estate", url: "https://youtube.com/shorts/ua_BPOPdA7g?feature=share", platform: "youtube", aspectRatio: "9:16", order: 2, thumbnail: thumb02.url },
+  { id: 2, category: "real-estate", url: "https://youtube.com/shorts/ua_BPOPdA7g?feature=share", platform: "youtube", aspectRatio: "9:16", order: 2, thumbnail: thumb02 },
   { id: 3, category: "real-estate", url: "https://youtube.com/shorts/G872O_9lhHc?feature=share", platform: "youtube", aspectRatio: "9:16", order: 3, thumbnail: thumb03.url },
   { id: 4, category: "real-estate", url: "https://youtube.com/shorts/yXU56INjo1c?feature=share", platform: "youtube", aspectRatio: "9:16", order: 4, thumbnail: thumb04.url },
   { id: 5, category: "real-estate", url: "https://youtu.be/fisPanMJ3MQ", platform: "youtube", aspectRatio: "16:9", order: 5, thumbnail: thumb05.url },

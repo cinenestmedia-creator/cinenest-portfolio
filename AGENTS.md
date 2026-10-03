@@ -10,4 +10,4 @@
 <!-- LOVABLE:END -->
 
 - Keep portfolio media in the typed `src/lib/portfolio-data.ts` catalogue and render it through reusable category/video components, so clip counts, order, orientation, and providers stay editable without duplicating markup.
-- Load provider players only inside the open video dialog and keep local thumbnail pointers in `src/assets/portfolio/`, so a growing video collection remains lightweight.
+- Load provider players only inside the open video dialog and bundle portfolio thumbnails from `src/assets/portfolio/`, so self-hosted production deployments contain every poster image.
