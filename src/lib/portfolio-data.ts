@@ -1,36 +1,36 @@
-import thumb01 from "@/assets/portfolio/video-01.jpg.asset.json";
-import thumb02 from "@/assets/portfolio/video-02.jpg.asset.json";
-import thumb03 from "@/assets/portfolio/video-03.jpg.asset.json";
-import thumb04 from "@/assets/portfolio/video-04.jpg.asset.json";
-import thumb05 from "@/assets/portfolio/video-05.jpg.asset.json";
-import thumb06 from "@/assets/portfolio/video-06.jpg.asset.json";
-import thumb07 from "@/assets/portfolio/video-07.jpg.asset.json";
-import thumb08 from "@/assets/portfolio/video-08.jpg.asset.json";
-import thumb09 from "@/assets/portfolio/video-09.jpg.asset.json";
-import thumb10 from "@/assets/portfolio/video-10.jpg.asset.json";
-import thumb11 from "@/assets/portfolio/video-11.jpg.asset.json";
-import thumb12 from "@/assets/portfolio/video-12.jpg.asset.json";
-import thumb13 from "@/assets/portfolio/video-13.jpg.asset.json";
-import thumb14 from "@/assets/portfolio/video-14.jpg.asset.json";
-import thumb15 from "@/assets/portfolio/video-15.jpg.asset.json";
-import thumb16 from "@/assets/portfolio/video-16.jpg.asset.json";
-import thumb17 from "@/assets/portfolio/video-17.jpg.asset.json";
-import thumb18 from "@/assets/portfolio/video-18.jpg.asset.json";
-import thumb19 from "@/assets/portfolio/video-19.jpg.asset.json";
-import thumb20 from "@/assets/portfolio/video-20.jpg.asset.json";
-import thumb21 from "@/assets/portfolio/video-21.jpg.asset.json";
-import thumb22 from "@/assets/portfolio/video-22.jpg.asset.json";
-import thumb23 from "@/assets/portfolio/video-23.jpg.asset.json";
-import thumb24 from "@/assets/portfolio/video-24.jpg.asset.json";
-import thumb25 from "@/assets/portfolio/video-25.jpg.asset.json";
-import thumb26 from "@/assets/portfolio/video-26.jpg.asset.json";
-import thumb27 from "@/assets/portfolio/video-27.jpg.asset.json";
-import thumb28 from "@/assets/portfolio/video-28.jpg.asset.json";
-import thumb29 from "@/assets/portfolio/video-29.jpg.asset.json";
-import thumb30 from "@/assets/portfolio/video-30.jpg.asset.json";
-import thumb31 from "@/assets/portfolio/video-31.jpg.asset.json";
-import thumb32 from "@/assets/portfolio/video-32.jpg.asset.json";
-import thumb33 from "@/assets/portfolio/video-33.jpg.asset.json";
+import thumb01 from "@/assets/portfolio/video-01.jpg";
+import thumb02 from "@/assets/portfolio/video-02.jpg";
+import thumb03 from "@/assets/portfolio/video-03.jpg";
+import thumb04 from "@/assets/portfolio/video-04.jpg";
+import thumb05 from "@/assets/portfolio/video-05.jpg";
+import thumb06 from "@/assets/portfolio/video-06.jpg";
+import thumb07 from "@/assets/portfolio/video-07.jpg";
+import thumb08 from "@/assets/portfolio/video-08.jpg";
+import thumb09 from "@/assets/portfolio/video-09.jpg";
+import thumb10 from "@/assets/portfolio/video-10.jpg";
+import thumb11 from "@/assets/portfolio/video-11.jpg";
+import thumb12 from "@/assets/portfolio/video-12.jpg";
+import thumb13 from "@/assets/portfolio/video-13.jpg";
+import thumb14 from "@/assets/portfolio/video-14.jpg";
+import thumb15 from "@/assets/portfolio/video-15.jpg";
+import thumb16 from "@/assets/portfolio/video-16.jpg";
+import thumb17 from "@/assets/portfolio/video-17.jpg";
+import thumb18 from "@/assets/portfolio/video-18.jpg";
+import thumb19 from "@/assets/portfolio/video-19.jpg";
+import thumb20 from "@/assets/portfolio/video-20.jpg";
+import thumb21 from "@/assets/portfolio/video-21.jpg";
+import thumb22 from "@/assets/portfolio/video-22.jpg";
+import thumb23 from "@/assets/portfolio/video-23.jpg";
+import thumb24 from "@/assets/portfolio/video-24.jpg";
+import thumb25 from "@/assets/portfolio/video-25.jpg";
+import thumb26 from "@/assets/portfolio/video-26.jpg";
+import thumb27 from "@/assets/portfolio/video-27.jpg";
+import thumb28 from "@/assets/portfolio/video-28.jpg";
+import thumb29 from "@/assets/portfolio/video-29.jpg";
+import thumb30 from "@/assets/portfolio/video-30.jpg";
+import thumb31 from "@/assets/portfolio/video-31.jpg";
+import thumb32 from "@/assets/portfolio/video-32.jpg";
+import thumb33 from "@/assets/portfolio/video-33.jpg";
 
 export type VideoPlatform = "youtube" | "vimeo" | "direct";
 export type PortfolioCategory = "real-estate" | "weddings" | "marketing" | "youtube";
@@ -71,7 +71,7 @@ export const portfolioCategories: PortfolioCategory[] = [
 ];
 
 export const videos: VideoItem[] = [
-  { id: 1, category: "real-estate", url: "https://youtu.be/Ayo2WasxSTM", platform: "youtube", aspectRatio: "16:9", order: 1, thumbnail: thumb01.url },
+  { id: 1, category: "real-estate", url: "https://youtu.be/Ayo2WasxSTM", platform: "youtube", aspectRatio: "16:9", order: 1, thumbnail: thumb01 },
   { id: 2, category: "real-estate", url: "https://youtube.com/shorts/ua_BPOPdA7g?feature=share", platform: "youtube", aspectRatio: "9:16", order: 2, thumbnail: thumb02.url },
   { id: 3, category: "real-estate", url: "https://youtube.com/shorts/G872O_9lhHc?feature=share", platform: "youtube", aspectRatio: "9:16", order: 3, thumbnail: thumb03.url },
   { id: 4, category: "real-estate", url: "https://youtube.com/shorts/yXU56INjo1c?feature=share", platform: "youtube", aspectRatio: "9:16", order: 4, thumbnail: thumb04.url },
