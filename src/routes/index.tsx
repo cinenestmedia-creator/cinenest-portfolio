@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { ArrowRight, ChevronDown, Menu, Play, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
-import logoAsset from "@/assets/cinenest-media-logo-trim.png.asset.json";
+const logoSrc = "/brand/cinenest-media-logo.png";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import {
@@ -48,7 +48,7 @@ function BrandLogo({ compact = false }: { compact?: boolean }) {
       aria-label="Visit CineNest Media"
       className={`block shrink-0 ${compact ? "h-12 w-28" : "h-14 w-36 sm:h-16 sm:w-44"}`}
     >
-      <img src={logoAsset.url} alt="CineNest Media" className="h-full w-full object-contain object-left" />
+      <img src={logoSrc} alt="CineNest Media" className="h-full w-full object-contain object-left" />
     </a>
   );
 }
