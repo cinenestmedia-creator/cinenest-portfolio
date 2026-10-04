@@ -6,4 +6,4 @@
 - [x] Verify category navigation, player controls, counts, and desktop/tablet/mobile layouts.
 - [x] Restore instant All/Real Estate/Weddings/Marketing/YouTube filtering and connect both menus.
 - [x] Replace the displayed branding and favicon with the latest supplied original logo.
-- [x] Package all video thumbnails with the production site and deploy the generated static output.
+- [x] Package all video thumbnails with the production site and deploy the generated static output.- [x] Serve all thumbnails and the logo from stable local files (public/thumbnails, public/brand) for the GitHub Pages domain
