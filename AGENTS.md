@@ -11,3 +11,4 @@
 
 - Keep portfolio media in the typed `src/lib/portfolio-data.ts` catalogue and render it through reusable category/video components, so clip counts, order, orientation, and providers stay editable without duplicating markup.
 - Load provider players only inside the open video dialog and serve portfolio thumbnails from `public/thumbnails/`, so self-hosted production deployments contain stable poster URLs.
+- The GitHub Pages workflow copies `.output/public` into `dist/client` when needed and verifies it before upload, because builds outside Lovable write the static site to `.output/public` instead of `dist/client`.

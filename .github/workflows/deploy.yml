@@ -38,13 +38,38 @@ jobs:
       - name: Build
         run: npm run build
 
+      # Outside Lovable the static site is written to .output/public;
+      # inside Lovable it is written to dist/client. Normalise to dist/client.
+      - name: Collect static site into dist/client
+        run: |
+          if [ ! -f dist/client/index.html ] && [ -d .output/public ]; then
+            rm -rf dist/client
+            mkdir -p dist/client
+            cp -R .output/public/. dist/client/
+          fi
+          touch dist/client/.nojekyll
+
+      - name: Verify static site contents
+        run: |
+          set -e
+          for f in index.html brand/cinenest-media-logo.png favicon.png \
+                   thumbnails/real-estate-01.jpg thumbnails/wedding-01.jpg \
+                   thumbnails/marketing-01.jpg thumbnails/youtube-01.jpg \
+                   thumbnails/testimonial-01.jpg; do
+            test -f "dist/client/$f" || { echo "Missing dist/client/$f"; exit 1; }
+          done
+          count=$(ls dist/client/thumbnails/*.jpg | wc -l)
+          echo "Thumbnails: $count"
+          test "$count" -eq 33
+          find dist/client -maxdepth 2 | sort
+
       - name: Setup GitHub Pages
         uses: actions/configure-pages@v6
 
       - name: Upload website
         uses: actions/upload-pages-artifact@v4
         with:
-          path: dist
+          path: dist/client
 
       - name: Deploy to GitHub Pages
         id: deployment
